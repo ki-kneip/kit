@@ -58,38 +58,8 @@ jobs:
           name: kit_${{ matrix.goos }}_${{ matrix.goarch }}
           path: dist/*
 
-  msi:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-          cache: true
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
-
-      - name: install wix
-        run: dotnet tool install --global wix
-
-      - name: build kit.exe
-        run: go build -trimpath -ldflags "-s -w -X main.version=$env:GITHUB_REF_NAME" -o bin/kit.exe ./cmd/kit
-
-      - name: build msi
-        run: |
-          $version = $env:GITHUB_REF_NAME.TrimStart('v')
-          wix build installer/kit.wxs -arch x64 -d "Version=$version" -o "bin/kit_$($env:GITHUB_REF_NAME)_windows_amd64.msi"
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: kit_windows_msi
-          path: bin/*.msi
-
   release:
-    needs: [binaries, msi]
+    needs: [binaries]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4

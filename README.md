@@ -20,7 +20,16 @@ $ kit @sshinto/vm1
 go install github.com/ki-kneip/kit/cmd/kit@latest
 ```
 
-Or build the Windows MSI installer (see [installer/](installer/)).
+On Windows, if you'd rather not have Go installed, download `kit.exe` from
+the [releases page](https://github.com/ki-kneip/kit/releases) and run:
+
+```
+kit.exe install
+```
+
+It copies itself into `%LocalAppData%\Programs\kit` and adds that to your
+user PATH — no admin rights, no external installer. `kit uninstall`
+reverses it.
 
 ## Quick start
 
@@ -101,6 +110,8 @@ kit help [verb]          overview, or one verb's help
 kit init [@][scope] [-k] create a starter file (-k = inside .kitfiles/)
 kit list | kit ls [@]    show the task files kit can see
 kit shell <cmd...>       run a raw command in the embedded shell
+kit install / uninstall  Windows: copy kit onto PATH, or remove it
+kit version               print kit's version
 ```
 
 Flags (before the target):
@@ -127,8 +138,9 @@ kit -e 5s health         rerun every 5s until Ctrl+C
 This repo eats its own dog food — see [.kit](.kit):
 
 ```sh
-kit build    # compile into bin/
-kit test     # go test ./...
+kit build         # compile into bin/
+kit test          # go test ./...
+kit go-install     # go install ./cmd/kit
 ```
 
 ## License

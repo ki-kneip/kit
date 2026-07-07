@@ -6,9 +6,5 @@ build: compile kit into bin/
 test: run every package test
     go test ./...
 
-install: install kit into GOPATH/bin
+go-install: put kit on GOPATH/bin via `go install`
     go install ./cmd/kit
-
-msi: build the Windows installer (needs WiX: dotnet tool install --global wix)
-    go build -o bin/kit.exe ./cmd/kit
-    wix build installer/kit.wxs -arch x64 -d Version=0.1.0 -o bin/kit.msi
